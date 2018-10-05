@@ -26,8 +26,11 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
     Route::resource('roles', 'RoleController');
     Route::resource('languages', 'LanguageController');
     Route::resource('states', 'StateController');
+    Route::resource('city', 'CityController');
+    Route::resource('activities', 'ActivityController');
+    Route::resource('teams', 'TeamController');
+    Route::resource('nutritions', 'NutritionController');
 
-//    Route::resource('city', 'CityController');
 });
 
 /*

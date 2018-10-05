@@ -18,7 +18,7 @@ class SetAllLanguage
     public function handle($request, Closure $next)
     {
         if(!$request->session()->has('languages')) {
-            $languages  = Language::getAllLanguage();
+            $languages  = Language::getAllActiveLanguage();
             $request->session()->put('languages', $languages);
         }
 

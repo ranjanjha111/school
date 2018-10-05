@@ -16,6 +16,8 @@ class CreateNutritionTable extends Migration
         Schema::create('nutrition', function (Blueprint $table) {
             $table->increments('id');
             $table->enum('status', ['0', '1'])->default('1');
+            $table->integer('created_by');
+            $table->integer('updated_by')->nullable();
             $table->timestamps();
         });
     }

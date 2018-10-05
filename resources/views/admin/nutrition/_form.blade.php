@@ -1,23 +1,21 @@
-<!-- Name Form Input -->
-<div class="form-group @if ($errors->has('name')) has-error @endif">
-    {!! Form::label('name', 'Name', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
-    <div class="col-md-6 col-sm-6 col-xs-12">
-    {!! Form::text('name', null, ['class' => 'form-control', 'placeholder'=>'Enter Nutrition Name']) !!}
-    @if ($errors->has('name')) <p class="help-block">{{ $errors->first('name') }}</p> @endif
+@foreach(request()->session()->get('languages') as $key => $lang)
+    <div class="form-group @if ($errors->has($key . '_name')) has-error @endif">
+        {!! Form::label('name', 'Nutrition *', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            {!! Form::textarea($key . '_name', isset($nutrition->id) ? old($key . '_name', $nutrition->translate($key)->name) : null, ['class' => 'form-control', 'placeholder'=>'Enter Nutrition', 'rows'=> '4']) !!}
+
+            @if ($errors->has($key . '_name')) <p class="help-block">{{ $errors->first($key . '_name') }}</p> @endif
+        </div>
+        <div class='control-label col-md-3 col-sm-3 col-xs-3'>
+            <img src="{{ $lang['flag'] }}" class="pull-left img-responsive" alt="{{$lang['name']}} Flag" width="25" height="20">
+        </div>
     </div>
-</div>
-<!-- password Form Input -->
+@endforeach
+
 <div class="form-group @if ($errors->has('status')) has-error @endif">
-    {!! Form::label('status', 'Status', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
+    {!! Form::label('status', 'Status *', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
     <div class="col-md-6 col-sm-6 col-xs-12">
-        <select name="status" class="form-control">             
-            <option value="1" {{ @$nutrition->status == "1" ? 'selected="selected"' : '' }} >Activate</option>
-            <option value="0" {{ @$nutrition->status == "0" ? 'selected="selected"' : '' }} >Inactive</option>
-        </select>
-    @if ($errors->has('status')) <p class="help-block">{{ $errors->first('status') }}</p> @endif
+        {{Form::select('status', $status, null, ['class'=>'form-control'])}}
+        @if ($errors->has('status')) <p class="help-block">{{ $errors->first('status') }}</p> @endif
     </div>
 </div>
-<!-- Permissions -->
-@if(isset($user))
-    @include('shared._permissions', ['closed' => 'true', 'model' => $user ])
-@endif

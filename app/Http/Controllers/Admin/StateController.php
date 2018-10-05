@@ -14,7 +14,13 @@ class StateController extends Controller
      */
     public function index()
     {
-        $result = State::latest()->paginate(10);
+        $state  = new State();
+        $result = $state->getAllState();
+
+        if (request()->ajax()) {
+            return view('admin.state.load', ['result' => $result])->render();
+        }
+
         return view('admin.state.index', compact('result'));
     }
 
@@ -47,7 +53,6 @@ class StateController extends Controller
         $data   = $request->all();
         $state  = new State();
         $result = $state->saveState($data);
-        // Create the gallery
         if($result) {
             $request->session()->flash('success', 'State created successfully.');
             return redirect()->route('states.index');
@@ -66,6 +71,11 @@ class StateController extends Controller
     public function show($id)
     {
         $state  = State::find($id);
+
+        if (request()->ajax()) {
+            return view('admin.state.show', ['state' => $state, 'id' => $id, 'modalClass' => request()->get('modalClass')])->render();
+        }
+
         return view('admin.state.show', compact('state'));
     }
 

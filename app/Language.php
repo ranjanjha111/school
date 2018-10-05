@@ -15,10 +15,30 @@ class Language extends Model
     const LANGUAGE_THUMB_DIR    = 'images/language/thumb/';
 
     /*
+     * Fetch all language.
+     */
+    public function getAllLanguage() {
+        if(request()->has('recordPerPage')) {
+            request()->session()->put('recordPerPage', request()->get('recordPerPage'));
+        }
+        if(request()->session()->has('recordPerPage')) {
+            $this->setPerPage(request()->session()->get('recordPerPage'));
+        }
+
+        $language   = Language::select('*');
+        if(request()->has('search')) {
+            $language   = $language->where('name', 'like', '%'. request()->get('search') .'%');
+        }
+        $language   = $language->paginate();
+
+        return $language;
+    }
+
+    /*
      * Fetch all active languages.
      */
-    public static function getAllLanguage() {
-        $languages  = Language::select('name', 'code', 'flag')->get();
+    public static function getAllActiveLanguage() {
+        $languages  = Language::select('name', 'code', 'flag')->where('status', '1')->get();
         $data       = array();
         foreach ($languages as $language) {
             $data[$language->code]['name'] = $language->name;

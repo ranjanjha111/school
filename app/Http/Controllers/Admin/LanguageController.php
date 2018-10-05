@@ -16,7 +16,12 @@ class LanguageController extends Controller
      */
     public function index()
     {
-        $result = Language::latest()->paginate(10);
+        $language   = new Language();
+        $result     = $language->getAllLanguage();
+        if (request()->ajax()) {
+            return view('admin.language.load', ['result' => $result])->render();
+        }
+
         return view('admin.language.index', compact('result'));
     }
 
@@ -81,7 +86,10 @@ class LanguageController extends Controller
     public function show($id)
     {
         $language = Language::find($id);
-        return view('admin.language.show', compact('language'));
+        if (request()->ajax()) {
+            return view('admin.language.show', ['language' => $language, 'id' => $id, 'modalClass' => request()->get('modalClass')])->render();
+        }
+        return view('admin.language.showback', compact('language'));
     }
 
     /**
@@ -135,7 +143,7 @@ class LanguageController extends Controller
             }
 
             $data['flag']   = $fileName;
-        }else{
+        } else{
             $data['flag']   = $language->flag;
         }
 

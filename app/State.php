@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Dimsav\Translatable\Translatable;
 use Auth;
+use App\Language;
 
 class State extends Model
 {
@@ -12,14 +13,45 @@ class State extends Model
 
     public $translatedAttributes = ['name'];
     public $localeKey;
-    protected $fillable = ['status', 'added_by', 'updated_by'];
+    protected $fillable = ['status', 'created_by', 'updated_by'];
 
     /*
-     * List all states.
+     * State have many cities.
+     */
+    public function city() {
+        return $this->hasMany('App\City');
+    }
+
+    /*
+     * Get active state list.
      */
     public function getStateList() {
-        $states = State::latest()->paginate(10);
-        return $states;
+        $result     = State::where('status', '1')->get()->toArray();
+        $stateList  = array('Please select a state');
+        foreach($result as $item) {
+            $stateList[$item['id']] = $item['name'];
+        }
+
+        return $stateList;
+    }
+
+    /*
+     * Get list of all state.
+     */
+    public function getAllState() {
+        if(request()->has('recordPerPage')) {
+            request()->session()->put('recordPerPage', request()->get('recordPerPage'));
+            $this->setPerPage(request()->session()->get('recordPerPage'));
+        } else if(request()->session()->has('recordPerPage')) {
+            $this->setPerPage(request()->session()->get('recordPerPage'));
+        }
+
+        $state  = State::select('*');
+        if(request()->has('search')) {
+            $state  = $state->whereTranslationLike('name', '%'. request()->get('search') .'%');
+        }
+
+        return $state->paginate();
     }
 
     /*
@@ -68,41 +100,5 @@ class State extends Model
         }
 
         return false;
-    }
-
-    /*
-     * Find state details.
-     */
-    public function findStateById($id) {
-        $state = State::find($id);
-
-        $result = array();
-        foreach (request()->session()->get('languages') as $lang => $language) {
-            foreach($this->translatedAttributes as $field) {
-                $result[$lang . '_' . $field] = $state->getTranslation($lang)->{$field};
-            }
-        }
-
-
-        dd($state);
-
-        return $state;
-    }
-
-    /*
-     * Build state data for user view.
-     */
-    public function buildStateData($state = array()) {
-        if (empty($state)) {
-            return false;
-        }
-
-        $result = array();
-        foreach (request()->session()->get('languages') as $lang => $language) {
-            foreach($this->translatedAttributes as $field) {
-                $this->translateOrNew($lang)->{$field}    = $data[$lang . '_' .$field];
-            }
-        }
-
     }
 }

@@ -1,7 +1,3 @@
-{{--@if($errors->any())--}}
-    {{--{{dd($errors->all())}}--}}
-{{--@endif--}}
-
 @foreach(request()->session()->get('languages') as $key => $lang)
     <div class="form-group @if ($errors->has($key . '_name')) has-error @endif">
         {!! Form::label('name', 'Name *', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
@@ -15,7 +11,6 @@
     </div>
 @endforeach
 
-<!-- password Form Input -->
 <div class="form-group @if ($errors->has('status')) has-error @endif">
     {!! Form::label('status', 'Status *', ['class'=>'control-label col-md-3 col-sm-3 col-xs-12']) !!}
     <div class="col-md-6 col-sm-6 col-xs-12">
@@ -23,7 +18,3 @@
     @if ($errors->has('status')) <p class="help-block">{{ $errors->first('status') }}</p> @endif
     </div>
 </div>
-<!-- Permissions -->
-@if(isset($user))
-    @include('shared._permissions', ['closed' => 'true', 'model' => $user ])
-@endif

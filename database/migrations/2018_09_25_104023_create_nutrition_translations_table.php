@@ -18,9 +18,6 @@ class CreateNutritionTranslationsTable extends Migration
             $table->integer('nutrition_id')->unsigned();
             $table->string('name');
             $table->string('locale')->index();
-
-            $table->integer('added_by');
-            $table->integer('updated_by');
             $table->timestamps();
 
             $table->unique(['nutrition_id', 'locale']);

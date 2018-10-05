@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Nutrition;
 use Illuminate\Support\Facades\App;
+use App\Nutrition;
 
 class NutritionController extends Controller
 {
@@ -16,9 +15,14 @@ class NutritionController extends Controller
      */
     public function index()
     {
-        $nutrition  = Nutrition::first();
+        $nutrition  = new Nutrition();
+        $result     = $nutrition->getAllNutrition();
 
-        return $nutrition->name;
+        if (request()->ajax()) {
+            return view('admin.nutrition.load', ['result' => $result])->render();
+        }
+
+        return view('admin.nutrition.index', compact('result'));
     }
 
     /**
@@ -28,7 +32,7 @@ class NutritionController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.nutrition.new');
     }
 
     /**
@@ -39,7 +43,22 @@ class NutritionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $langValidation = [
+            'name' => 'required'
+        ];
+        $validation     = [
+            'status'    => 'required'
+        ];
+        $this->validateTranslator($request, $langValidation, $validation);
+
+        $nutrition  = new Nutrition();
+        if($nutrition->saveNutrition($request->all())) {
+            $request->session()->flash('success', 'Nutrition created successfully.');
+            return redirect()->route('nutritions.index');
+        } else {
+            $request->session()->flash('danger', 'Nutrition could not be created. Please try again.');
+            return redirect()->route('nutritions.create');
+        }
     }
 
     /**
@@ -50,7 +69,13 @@ class NutritionController extends Controller
      */
     public function show($id)
     {
-        //
+        $nutrition  = Nutrition::find($id);
+        if (request()->ajax()) {
+            return view('admin.nutrition.show', ['nutrition' => $nutrition, 'id' => $id, 'modalClass' => request()->get('modalClass')])->render();
+        }
+
+        return view('admin.nutrition.show', compact('nutrition'));
+
     }
 
     /**
@@ -61,7 +86,8 @@ class NutritionController extends Controller
      */
     public function edit($id)
     {
-        //
+        $nutrition  = Nutrition::find($id);
+        return view('admin.nutrition.edit', compact('nutrition'));
     }
 
     /**
@@ -73,7 +99,24 @@ class NutritionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $langValidation = [
+            'name' => 'required'
+        ];
+        $validation     = [
+            'status'    => 'required'
+        ];
+        $this->validateTranslator($request, $langValidation, $validation);
+
+        $nutrition  = new Nutrition();
+        if($nutrition->updateNutrition($id, $request->all())) {
+            $request->session()->flash('success', 'Nutrition updated successfully.');
+            return redirect()->route('nutritions.index');
+        } else {
+            $request->session()->flash('danger', 'Nutrition could not be updated.');
+            return redirect()->route('nutritions.index');
+        }
+
+        return redirect()->back();
     }
 
     /**
@@ -84,6 +127,12 @@ class NutritionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if(Nutrition::findOrFail($id)->delete()) {
+            request()->session()->flash('success', 'Nutrition deleted successfully.');
+        } else {
+            request()->session()->flash('danger', 'Nutrition could not be deleted.');
+        }
+
+        return redirect()->back();
     }
 }

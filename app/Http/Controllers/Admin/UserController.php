@@ -20,7 +20,13 @@ class UserController extends Controller
      */
     public function index()
     {
-        $result = User::latest()->paginate(10);
+//        $result = User::latest()->paginate(10);
+        $user   = new User();
+        $result = $user->getAllUser();
+
+        if (request()->ajax()) {
+            return view('admin.user.load', ['result' => $result])->render();
+        }
 
         return view('admin.user.index', compact('result'));
     }
@@ -77,6 +83,10 @@ class UserController extends Controller
         $user = User::find($id);
         $roles = Role::pluck('name', 'id');
         $permissions = Permission::all('name', 'id');
+
+        if (request()->ajax()) {
+            return view('admin.user.show', ['user' => $user, 'id' => $id, 'modalClass' => request()->get('modalClass')])->render();
+        }
 
         return view('admin.user.show', compact('user', 'roles', 'permissions'));
     }

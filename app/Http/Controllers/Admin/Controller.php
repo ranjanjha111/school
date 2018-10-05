@@ -20,9 +20,25 @@ class Controller extends BaseController
             '1'     => 'Active'
         );
 
+//        $showRecords    = array(
+//            '10'    => 10,
+//            '25'    => 25,
+//            '50'    => 50,
+//            '100'   => 100
+//        );
+
+        $showRecords    = array(
+            '1'     => 1,
+            '2'     => 2,
+            '3'     => 3,
+            '4'     => 4
+        );
+
 //        $languages  = request()->session()->get('languages');
 
         View::share('status', $status);
+        View::share('showRecords', $showRecords);
+
     }
 
     public function validateTranslator($request, $langValidation = array(), $normalValidation = array()) {
@@ -39,4 +55,9 @@ class Controller extends BaseController
         $this->validate($request, $validation);
     }
 
+    /*
+     * Set number of records per page.
+     */
+    public function setPerPage($records = 10) {
+    }
 }

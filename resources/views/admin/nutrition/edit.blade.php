@@ -1,4 +1,4 @@
-@extends('admin.layout')
+@extends('admin.layouts.layout')
 @section('adminHeadCSS')
 @endsection
 @section('adminContent')
@@ -23,7 +23,7 @@
                     <div class="x_content">
                         <br />
                         {!! Form::model($nutrition, ['method' => 'PUT', 'route' => ['nutritions.update',  $nutrition->id ], 'class' => 'form-horizontal form-label-left' ]) !!}
-                            @include('nutrition._form')
+                            @include('admin.nutrition._form')
                             <!-- Submit Form Button -->
                             <div class="ln_solid"></div>
                             <div class="form-group">

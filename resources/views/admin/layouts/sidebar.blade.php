@@ -41,82 +41,82 @@
                     <li><a><i class="fa fa-key"></i> Manage Role <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             <li><a href="{{ route('roles.index') }}">List Role</a></li>
-                             @can('add_users')
-                            <li><a href="{{ route('roles.create') }}">Add New Role</a></li>
-                             @endcan
+                            @can('add_users')
+                                <li><a href="{{ route('roles.create') }}">Add New Role</a></li>
+                            @endcan
                         </ul>
                     </li>
                     <li><a><i class="fa fa-users" aria-hidden="true"></i>Manage Language <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                    <li><a href="{{ route('languages.index') }}">List Language</a></li>
-                    <li><a href="{{ route('languages.create') }}">Add New Language</a></li>
-                    </ul>
+                        <ul class="nav child_menu">
+                            <li><a href="{{ route('languages.index') }}">List Language</a></li>
+                            <li><a href="{{ route('languages.create') }}">Add New Language</a></li>
+                        </ul>
+                    </li>
+                    <li><a><i class="fa fa-users" aria-hidden="true"></i>Manage Team <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a href="{{ route('teams.index') }}">List Team</a></li>
+                            <li><a href="{{ route('teams.create') }}">Add New Team</a></li>
+                        </ul>
                     </li>
 
-
-                     {{--<li><a><i class="fa fa-users" aria-hidden="true"></i>Manage Team <span class="fa fa-chevron-down"></span></a>--}}
-                        {{--<ul class="nav child_menu">--}}
-                            {{--<li><a href="{{ route('teams.index') }}">List Team</a></li>                          --}}
-                            {{--<li><a href="{{ route('teams.create') }}">Add New Team</a></li>                           --}}
-                        {{--</ul>--}}
-                    {{--</li>--}}
                     <li><a><i class="fa fa-flag" aria-hidden="true"></i> Manage State <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             <li><a href="{{ route('states.index') }}">List State</a></li>
-                             @can('add_users')
-                            <li><a href="{{ route('states.create') }}">Add State</a></li>
-                             @endcan
+                            @can('add_users')
+                                <li><a href="{{ route('states.create') }}">Add State</a></li>
+                            @endcan
                         </ul>
                     </li>
-                    {{--<li><a><i class="fa fa-building"></i> Manage City <span class="fa fa-chevron-down"></span></a>--}}
-                        {{--<ul class="nav child_menu">--}}
-                            {{--<li><a href="{{ route('city.index') }}">List City</a></li>  --}}
-                            {{--@can('add_users')--}}
-                            {{--<li><a href="{{ route('city.create') }}">Add New City</a></li>      --}}
-                            {{--@endcan--}}
-                        {{--</ul>--}}
-                    {{--</li>--}}
+                    <li><a><i class="fa fa-building"></i> Manage City <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a href="{{ route('city.index') }}">List City</a></li>
+                            @can('add_users')
+                                <li><a href="{{ route('city.create') }}">Add New City</a></li>
+                            @endcan
+                        </ul>
+                    </li>
+
                     {{--<li><a><i class="fa fa-server" aria-hidden="true"></i> Manage Featured <span class="fa fa-chevron-down"></span></a>--}}
-                        {{--<ul class="nav child_menu">--}}
-                            {{--<li><a href="{{ route('feature.index') }}">List Featured</a></li>       --}}
-                            {{--@can('add_users')--}}
-                            {{--<li><a href="{{ route('feature.create') }}">Add New Featured</a></li>    --}}
-                            {{--@endcan--}}
-                        {{--</ul>--}}
+                    {{--<ul class="nav child_menu">--}}
+                    {{--<li><a href="{{ route('feature.index') }}">List Featured</a></li>       --}}
+                    {{--@can('add_users')--}}
+                    {{--<li><a href="{{ route('feature.create') }}">Add New Featured</a></li>    --}}
+                    {{--@endcan--}}
+                    {{--</ul>--}}
                     {{--</li>--}}
-                    {{--<li><a><i class="fa fa-history" aria-hidden="true"></i> Manage Activity <span class="fa fa-chevron-down"></span></a>--}}
-                        {{--<ul class="nav child_menu">--}}
-                            {{--<li><a href="{{ route('activities.index') }}">List Activity</a></li>       --}}
-                            {{--@can('add_users')--}}
-                            {{--<li><a href="{{ route('activities.create') }}">Add New Activity</a></li>    --}}
-                            {{--@endcan--}}
-                        {{--</ul>--}}
-                    {{--</li>--}}
-                    {{--<li><a><i class="fa fa-universal-access" aria-hidden="true"></i> Manage Nutrition <span class="fa fa-chevron-down"></span></a>--}}
-                        {{--<ul class="nav child_menu">--}}
-                            {{--<li><a href="{{ route('nutritions.index') }}">List Nutrition</a></li>       --}}
-                            {{--@can('add_users')--}}
-                            {{--<li><a href="{{ route('nutritions.create') }}">Add New Nutrition</a></li>    --}}
-                            {{--@endcan--}}
-                        {{--</ul>--}}
-                    {{--</li>--}}
+                    <li><a><i class="fa fa-history" aria-hidden="true"></i> Manage Activity <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a href="{{ route('activities.index') }}">List Activity</a></li>
+                            @can('add_users')
+                                <li><a href="{{ route('activities.create') }}">Add New Activity</a></li>
+                            @endcan
+                        </ul>
+                    </li>
+                    <li><a><i class="fa fa-universal-access" aria-hidden="true"></i> Manage Nutrition <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                    <li><a href="{{ route('nutritions.index') }}">List Nutrition</a></li>
+                    @can('add_users')
+                    <li><a href="{{ route('nutritions.create') }}">Add New Nutrition</a></li>
+                    @endcan
+                    </ul>
+                    </li>
                     {{--<li><a><i class="fa fa-tasks" aria-hidden="true"></i> Manage Program <span class="fa fa-chevron-down"></span></a>--}}
-                        {{--<ul class="nav child_menu">--}}
-                            {{--<li><a href="{{ route('programs.index') }}">List Program</a></li>       --}}
-                            {{--@can('add_users')--}}
-                            {{--<li><a href="{{ route('programs.create') }}">Add New Program</a></li>    --}}
-                            {{--@endcan--}}
-                        {{--</ul>--}}
+                    {{--<ul class="nav child_menu">--}}
+                    {{--<li><a href="{{ route('programs.index') }}">List Program</a></li>       --}}
+                    {{--@can('add_users')--}}
+                    {{--<li><a href="{{ route('programs.create') }}">Add New Program</a></li>    --}}
+                    {{--@endcan--}}
+                    {{--</ul>--}}
                     {{--</li>--}}
                     {{--<li><a><i class="fa fa-tasks" aria-hidden="true"></i> Manage Gallery <span class="fa fa-chevron-down"></span></a>--}}
-                        {{--<ul class="nav child_menu">--}}
-                            {{--<li><a href="{{ route('galleries.index') }}">List Gallery</a></li>       --}}
-                            {{--@can('add_users')--}}
-                            {{--<li><a href="{{ route('galleries.create') }}">Add New Gallery</a></li>    --}}
-                            {{--@endcan--}}
-                        {{--</ul>--}}
+                    {{--<ul class="nav child_menu">--}}
+                    {{--<li><a href="{{ route('galleries.index') }}">List Gallery</a></li>       --}}
+                    {{--@can('add_users')--}}
+                    {{--<li><a href="{{ route('galleries.create') }}">Add New Gallery</a></li>    --}}
+                    {{--@endcan--}}
+                    {{--</ul>--}}
                     {{--</li>--}}
-                    
+
                 </ul>
             </div>
         </div>
@@ -124,7 +124,3 @@
 
     </div>
 </div>
-
-
-
-
