@@ -17,6 +17,10 @@ return [
         'guard' => 'web',
         'passwords' => 'users',
     ],
+    'guardian' => [
+        'driver' => 'eloquent',
+        'model' => App\Guardian::class,
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -45,6 +49,14 @@ return [
             'driver'    => 'passport',
             'provider'  => 'users',
         ],
+        'guardian' => [
+            'driver' => 'session',
+            'provider' => 'guardian',
+        ],
+        'guardian-api' => [
+            'driver' => 'passport',
+            'provider' => 'guardian',
+        ],
     ],
 
     /*
@@ -68,6 +80,11 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\User::class,
+        ],
+
+        'guardian' => [
+            'driver' => 'eloquent',
+            'model' => App\Guardian::class,
         ],
 
         // 'users' => [

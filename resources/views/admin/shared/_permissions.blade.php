@@ -1,38 +1,55 @@
-<div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="{{ isset($title) ? str_slug($title) :  'permissionHeading' }}">
-        <h4 class="panel-title">
-            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#dd-{{ isset($title) ? str_slug($title) :  'permissionHeading' }}" aria-expanded="{{ isset($closed) ? $closed : 'true' }}" aria-controls="dd-{{ isset($title) ? str_slug($title) :  'permissionHeading' }}">
-                {{ isset($title) ? $title : 'Override Permissions' }} {!! isset($user) ? '<span class="text-danger">(' . $user->getDirectPermissions()->count() . ')</span>' : '' !!}
-            </a>
-        </h4>
-    </div>
-    <div id="dd-{{ isset($title) ? str_slug($title) :  'permissionHeading' }}" class="panel-collapse collapse {{ isset($closed) ? $closed : 'in' }}" role="tabpanel" aria-labelledby="dd-{{ isset($title) ? str_slug($title) :  'permissionHeading' }}">
-        <div class="panel-body">
-            <div class="row">
-                @foreach($permissions as $perm)
-                    <?php
-                    $per_found = null;
+<div class="table-responsive">
+    <table class="table table-striped bulk_action">
+        <thead>
+        <tr>
+            <th class="col-md-1">#</th>
+            <th class="col-md-3">Name</th>
+            <th class="col-md-2"><label style="color:#337ab7">View</label></th>
+            <th class="col-md-2"><label style="color:#337ab7">Add</label></th>
+            <th class="col-md-2"><label style="color:#337ab7">Edit</label></th>
+            <th class="col-md-2"><label style="color:#337ab7">Delete</label></th>
+        </tr>
+        </thead>
+        <tbody>
 
-                    if (isset($role)) {
-                        $per_found = $role->hasPermissionTo($perm->name);
-                    }
+        <?php
+        $index = 0;
+        ?>
+        @foreach($permissions as $key => $permission)
+            <?php
+            $per_found = null;
+            if (isset($role)) {
+                $per_found = $role->hasPermissionTo($permission->name);
+            }
+            if (isset($user)) {
+                $per_found = $user->hasDirectPermission($permission->name);
+            }
 
-                    if (isset($user)) {
-                        $per_found = $user->hasDirectPermission($perm->name);
-                    }
+            ?>
 
-                    $options['class'] = 'flat';
-                    ?>
+            @if($key % 4 === 0 || $index === 0)
+                <tr>
+                    <td class="col-md-1">{{ ++$index }}</td>
+                    <td class="col-md-3">{{ $permission->name }}</td>
+                    @endif
+                    <td class="col-md-2">
+                        @if(isset($id))
+                            @if($per_found)
+                                <i class="fa fa-check" style="font-size: 18px; color:#3CB371"></i>
+                            @else
+                                <i class="fa fa-close" style="font-size: 18px; color:#cc0000"></i>
+                            @endif
+                        @else
+                            <div class="checkbox">
+                                {!! Form::checkbox("permissions[]", $permission->name, $per_found, ['class'=>'flat']) !!}
+                            </div>
+                        @endif
+                    </td>
 
-                    <div class="col-md-3">
-                        <div class="checkbox">
-                            <label class="{{ str_contains($perm->name, 'delete') }}">
-                                {!! Form::checkbox("permissions[]", $perm->name, $per_found, isset($options) ? $options : []) !!} {{ $perm->name }}
-                            </label>
-                        </div>
-                    </div>
-                    @endforeach
-            </div>
-        </div>
-    </div>
+                    @if(($key + 1) % 4 === 0)
+                </tr>
+            @endif
+        @endforeach
+        </tbody>
+    </table>
 </div>

@@ -153,6 +153,8 @@ return [
         Spatie\Permission\PermissionServiceProvider::class,
         Dimsav\Translatable\TranslatableServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
+        Laravel\Passport\PassportServiceProvider::class,
+
 
 
         /*

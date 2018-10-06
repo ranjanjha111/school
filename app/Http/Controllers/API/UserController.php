@@ -50,6 +50,44 @@ class UserController extends Controller
     }
 
     /**
+     * login api
+     *
+     * @param   string $email
+     * @param   string $password
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function glogin(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'email'     => 'required|string|email',
+            'password'  => 'required|string'
+        ]);
+        if ($validator->fails()) {
+            $errors = json_decode($validator->errors());
+            foreach($errors as $error) {
+                $message    = $error[0];
+            }
+            $response['result']     = 'error';
+            $response['message']    = $message ?? '';
+
+            return response()->json($response);
+        }
+
+        if(Auth::guard('guardian')->attempt(request(['email', 'password']))) {
+            $user                   = $request->user('guardian');
+            $response['result']     = 'success';
+            $response['message']    = 'Logged in successfully';
+            $response['token']      = $user->createToken('MyApp')->accessToken;
+            $response['data']       = $user;
+        } else {
+            $response['result']     = 'error';
+            $response['message']    = 'Invalid Credential. Please try again.';
+        }
+
+        return response()->json($response);
+    }
+
+    /**
      * User profile api
      *
      * @return \Illuminate\Http\Response

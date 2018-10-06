@@ -19,8 +19,15 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::all();
-        $permissions = Permission::all();
+        $role   = new Role();
+        $roles  = $role->getAllRole();
+
+        $permission     = new Permission();
+        $permissions    = $permission->getAllPermission();
+
+        if (request()->ajax()) {
+            return view('admin.role.load', ['roles' => $roles, 'permissions' => $permissions])->render();
+        }
 
         return view('admin.role.index', compact('roles', 'permissions'));
     }
@@ -63,7 +70,13 @@ class RoleController extends Controller
      */
     public function show($id)
     {
-        //
+        $role           = Role::find($id);
+        $permissions    = Permission::all();
+        if (request()->ajax()) {
+            return view('admin.role.show', ['role' => $role, 'permissions' => $permissions, 'id' => $id, 'modalClass' => request()->get('modalClass')])->render();
+        }
+
+        return view('admin.role.show', compact('role'));
     }
 
     /**
@@ -74,7 +87,10 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
-        //
+        $role           = Role::find($id);
+        $permissions    = Permission::all();
+
+        return view('admin.role.edit', compact('role', 'permissions'));
     }
 
     /**

@@ -10,7 +10,7 @@
     
     <link href="{{ asset('admin/vendors/nprogress/nprogress.css') }}" rel="stylesheet">
     
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    {{--<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">--}}
     
     <link href="{{ asset('admin/vendors/css/jquery.timepicker.min.css')}}" rel="stylesheet">
     @yield('adminHeadCSS')
@@ -49,7 +49,7 @@
     
     <script src="{{ asset('admin/vendors/jquery/dist/jquery.timepicker.min.js') }}"></script>
 
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    {{--<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>--}}
     @auth
         @include('admin.layouts.footer')
     @endauth
