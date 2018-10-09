@@ -5,7 +5,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
                 </button>
-                <h4 class="modal-title" id="myModalLabel">View User</h4>
+                <h4 class="modal-title" id="myModalLabel">View Admin User</h4>
             </div>
             <div class="modal-body">
                 <div class="form-horizontal">
@@ -27,6 +27,13 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Role</label>
                         <div class="control-div col-md-6 col-sm-6 col-xs-12">
                             {{ implode($user->roles->pluck('name')->toArray()) }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Status</label>
+                        <div class="control-div col-md-6 col-sm-6 col-xs-12">
+                            {{ $user->status ? 'Active' : 'Inactive' }}
                         </div>
                     </div>
 

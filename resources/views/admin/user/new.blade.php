@@ -52,5 +52,7 @@
 @endsection
 
 @section('adminFooterScript')
-
+    <!-- iCheck -->
+    <script src="{{ asset('admin/vendors/iCheck/icheck.min.js') }}"></script>
+    <script src="{{ asset('js/custom.js') }}"></script>
 @endsection

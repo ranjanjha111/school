@@ -16,13 +16,13 @@
                     <ul class="dropdown-menu dropdown-usermenu pull-right">
                         <li><a href="javascript:;"> Profile</a></li>
                         <li>
-                            <a href="{{ route('logout') }}" 
+                            <a href="{{ route('admin.logout') }}"
                                onclick="event.preventDefault();
                                    document.getElementById('logout-form').submit();">
                                 <i class="fa fa-sign-out pull-right"></i>Log Out
                             </a>
 
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
                                 {{ csrf_field() }}
                             </form>
                             

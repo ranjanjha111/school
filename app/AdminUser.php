@@ -8,9 +8,11 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class AdminUser extends Authenticatable
 {
     use HasApiTokens, Notifiable, HasRoles;
+
+    protected $guard    = 'admin';
 
     /**
      * The attributes that are mass assignable.
@@ -33,7 +35,7 @@ class User extends Authenticatable
     /*
      * Get list of all user.
      */
-    public function getAllUser() {
+    public function getAllAdmin() {
         if(request()->has('recordPerPage')) {
             request()->session()->put('recordPerPage', request()->get('recordPerPage'));
         }
@@ -41,17 +43,11 @@ class User extends Authenticatable
             $this->setPerPage(request()->session()->get('recordPerPage'));
         }
 
+        $admin  = AdminUser::select('*');
         if(request()->has('search')) {
-            $user   = User::where('name', 'like', '%'. request()->get('search') .'%');
+            $admin  = $admin->where('name', 'like', '%'. request()->get('search') .'%');
         }
 
-        if(!isset($user)) {
-            $user   = User::where('id', '>', '0');
-        }
-
-        $user   = $user->paginate();
-
-        return $user;
+        return $admin->paginate();
     }
-
 }

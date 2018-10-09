@@ -4,9 +4,15 @@ namespace App;
 
 class Permission extends \Spatie\Permission\Models\Permission
 {
+
     public static function defaultPermissions()
     {
         return [
+            'view_admins',
+            'add_admins',
+            'edit_admins',
+            'delete_admins',
+
             'view_users',
             'add_users',
             'edit_users',
@@ -38,4 +44,5 @@ class Permission extends \Spatie\Permission\Models\Permission
 
         return $permission->paginate();
     }
+
 }

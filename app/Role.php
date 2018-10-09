@@ -4,7 +4,6 @@ namespace App;
 
 class Role extends \Spatie\Permission\Models\Role
 {
-
     /*
      * Get list of all role.
      */

@@ -7,13 +7,11 @@ use Illuminate\Support\Facades\Auth;
 use App\Authorizable;
 use App\Role;
 use App\Permission;
-use App\User;
+use App\AdminUser;
 
-class UserController extends Controller
+class AdminController extends Controller
 {
     use Authorizable;
-
-//    protected $guard = 'web';
 
     /**
      * Display a listing of the resource.
@@ -22,14 +20,14 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user   = new User();
-        $result = $user->getAllUser();
+        $admin  = new AdminUser();
+        $result = $admin->getAllAdmin();
 
         if (request()->ajax()) {
-            return view('admin.user.load', ['result' => $result])->render();
+            return view('admin.admin.load', ['result' => $result])->render();
         }
 
-        return view('admin.user.index', compact('result'));
+        return view('admin.admin.index', compact('result'));
     }
 
     /**
@@ -39,10 +37,11 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles          = Role::where('guard_name', 'web')->pluck('name', 'id');
+//        $role           = Role::where('name', Auth::guard('admin')->user()->getRoleNames())->first();
+        $roles          = Role::where('guard_name', 'admin')->pluck('name', 'id');
         $permissions    = Permission::where('guard_name')->get();
 
-        return view('admin.user.new', compact('roles', 'permissions'));
+        return view('admin.admin.new', compact('roles', 'permissions'));
     }
 
     /**
@@ -65,14 +64,14 @@ class UserController extends Controller
         $request->merge(['password' => bcrypt($request->get('password'))]);
 
         // Create the user
-        if ( $user = User::create($request->except('roles', 'permissions')) ) {
-            $this->syncPermissions($request, $user);
+        if ( $admin = AdminUser::create($request->except('roles', 'permissions')) ) {
+            $this->syncPermissions($request, $admin);
             $request->session()->flash('success', 'User created successfully.');
         } else {
             $request->session()->flash('danger', 'User could not be created.');
         }
 
-        return redirect()->route('users.index');
+        return redirect()->route('admins.index');
     }
 
     /**
@@ -83,14 +82,15 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user           = User::findOrFail($id);
-        $role           = Role::where('guard_name', 'web')->where('name', $user->getRoleNames())->first();
-        $permissions    = Permission::where('guard_name', 'web')->get();
+        $user           = AdminUser::findOrFail($id);
+        $role           = Role::where('guard_name', 'admin')->where('name', $user->getRoleNames())->first();
+        $permissions    = Permission::where('guard_name', 'admin')->get();
         if (request()->ajax()) {
-            return view('admin.user.show', ['user' => $user, 'role' => $role, 'permissions' => $permissions, 'id' => $id, 'modalClass' => request()->get('modalClass')])->render();
+            return view('admin.admin.show', ['user' => $user, 'role' => $role, 'permissions' => $permissions, 'id' => $id, 'modalClass' => request()->get('modalClass')])->render();
         }
 
-        return view('admin.user.show', compact('role'));
+        return view('admin.admin.show', compact('role'));
+
     }
 
     /**
@@ -101,14 +101,14 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user           = User::findOrFail($id);
+        $user   = AdminUser::findOrFail($id);
 
         //Need to refactor below code.
-        $role           = Role::where('name', $user->getRoleNames())->first();
-        $roles          = Role::where('guard_name', 'web')->pluck('name', 'id');
+        $role   = Role::where('name', $user->getRoleNames())->first();
+        $roles = Role::where('guard_name', 'admin')->pluck('name', 'id');
         $permissions    = Permission::where('guard_name', $role->guard_name)->get();
 
-        return view('admin.user.edit', compact('user', 'role', 'roles', 'permissions'));
+        return view('admin.admin.edit', compact('user', 'role', 'roles', 'permissions'));
     }
 
     /**
@@ -128,37 +128,41 @@ class UserController extends Controller
         ]);
 
         // Get the user
-        $user = User::findOrFail($id);
+        $admin  = AdminUser::findOrFail($id);
 
         // Update user
-        $user->fill($request->except('roles', 'permissions', 'password'));
+        $admin->fill($request->except('roles', 'permissions', 'password'));
 
         // check for password change
         if($request->get('password')) {
-            $user->password = bcrypt($request->get('password'));
+            $admin->password = bcrypt($request->get('password'));
         }
 
         // Handle the user roles
-        $this->syncPermissions($request, $user);
-        if($user->save()) {
+        $this->syncPermissions($request, $admin);
+        if($admin->save()) {
             $request->session()->flash('success', 'User has been updated successfully.');
         } else {
             $request->session()->flash('danger', 'User has not been updated.');
         }
 
-        return redirect()->route('users.index');
+        return redirect()->route('admins.index');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
-     * @internal param Request $request
      */
     public function destroy($id)
     {
-        if(User::findOrFail($id)->delete()) {
+        if ( $this->guard()->user()->id == $id ) {
+            request()->session()->flash('danger', 'Deletion of currently logged in user is not allowed');
+            return redirect()->back();
+        }
+
+        if(AdminUser::findOrFail($id)->delete()) {
             request()->session()->flash('success', 'User deleted successfully.');
         } else {
             request()->session()->flash('danger', 'User could not be deleted.');
@@ -171,10 +175,10 @@ class UserController extends Controller
      * Sync roles and permissions
      *
      * @param Request $request
-     * @param $user
+     * @param $admin
      * @return string
      */
-    private function syncPermissions(Request $request, $user)
+    private function syncPermissions(Request $request, $admin)
     {
         // Get the submitted roles
         $roles = $request->get('roles', []);
@@ -184,16 +188,16 @@ class UserController extends Controller
         $roles = Role::find($roles);
 
         // check for current role changes
-        if( ! $user->hasAllRoles( $roles ) ) {
+        if( ! $admin->hasAllRoles( $roles ) ) {
             // reset all direct permissions for user
-            $user->permissions()->sync([]);
+            $admin->permissions()->sync([]);
         } else {
             // handle permissions
-            $user->syncPermissions($permissions);
+            $admin->syncPermissions($permissions);
         }
 
-        $user->syncRoles($roles);
+        $admin->syncRoles($roles);
 
-        return $user;
+        return $admin;
     }
 }

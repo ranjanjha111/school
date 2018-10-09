@@ -2,44 +2,41 @@
     <div class="table-responsive">
         <table class="table table-striped jambo_table bulk_action">
             <thead>
-            <tr class="headings">
-                <th class="column-title col-md-1">Id</th>
-                <th class="column-title col-md-2">Name</th>
-                <th class="column-title col-md-1">Profile</th>
-                <th class="column-title col-md-3">Description</th>
-                <th class="column-title col-md-1">Image</th>
-                <th class="column-title col-md-1">Status</th>
-                @can('view_users', 'edit_users', 'delete_users')
-                    <th class="column-title text-center col-md-3">Actions</th>
-                @endcan
-            </tr>
+                <tr class="headings">
+                    <th class="column-title col-md-1">Id</th>
+                    <th class="column-title col-md-2">Name</th>
+                    <th class="column-title col-md-3">Email</th>
+                    <th class="column-title col-md-2">Role</th>
+                    <th class="column-title col-md-1">Status</th>
+                    @can('view_admins', 'edit_admins', 'delete_admins')
+                        <th class="column-title text-center col-md-3">Actions</th>
+                    @endcan
+                </tr>
             </thead>
+
             <tbody>
-            @foreach($result as $key => $item)
+                @foreach($result as $item)
                 <tr>
-                    <td class="col-md-1">{{ $key + 1 }}</td>
+                    <td class="col-md-1">{{ $item->id }}</td>
                     <td class="col-md-2">{{ $item->name }}</td>
-                    <td class="col-md-1">{{ $item->profile_heading }}</td>
-                    <td class="col-md-3">{{ str_limit($item->description, $limit = 30, $end = '...') }}</td>
-                    <td class="col-md-1">
-                        <img src="{{url(\App\Team::TEAM_THUMB_DIR . $item->image)}}" alt="Team" width="45" height="45">
-                    </td>
+                    <td class="col-md-3">{{ $item->email }}</td>
+                    <td class="col-md-2">{{ $item->roles->implode('name', ', ') }}</td>
                     <td class="col-md-1">{{ ($item->status == 1) ? 'Active' : 'Inactive' }}</td>
-                    @can('view_users', 'edit_users', 'delete_users')
-                        <td class="text-center col-md-3">
-                            @can('view_users')
-                                <button type="button" class="btn btn-xs btn-default viewBtn" view-modal-class="view-modal-{{$item->id}}" view-id="{{$item->id}}">
-                                    <i class="fa fa-eye"> View</i>
-                                </button>
-                            @endcan
+                    @can('view_admins', 'edit_admins', 'delete_admins')
+                    <td class="text-center col-md-3">
+                        @can('view_admins')
+                            <button type="button" class="btn btn-xs btn-default viewBtn" view-modal-class="view-modal-{{$item->id}}" view-id="{{$item->id}}">
+                                <i class="fa fa-eye"> View</i>
+                            </button>
+                        @endcan
 
-                            @can('edit_users')
-                                <a href="{{route('teams.edit', ['id' => $item->id ])}}" class="btn btn-xs btn-info">
-                                    <i class="fa fa-edit"></i> Edit</a>
-                            @endcan
+                        @can('edit_admins')
+                        <a href="{{ route('admins.edit', [str_singular('users') => $item->id])  }}" class="btn btn-xs btn-info">
+                            <i class="fa fa-edit"></i> Edit</a>
+                        @endcan
 
-                            @can('delete_users')
-                                {!! Form::open( ['method' => 'delete', 'url' => route('teams.destroy', ['id' => $item->id]), 'style' => 'display: inline']) !!}
+                        @can('delete_admins')
+                        {!! Form::open( ['method' => 'delete', 'url' => route('admins.destroy', ['user' => $item->id]), 'style' => 'display: inline']) !!}
                                 <button type="button" class="btn btn-xs btn-danger deleteBtn" delete-modal-class="delete-modal-{{$item->id}}">
                                     <i class="fa fa-trash-o"> Delete</i>
                                 </button>
@@ -50,7 +47,7 @@
                                             <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
                                                 </button>
-                                                <h4 class="modal-title" id="myModalLabel2">Delete Team</h4>
+                                                <h4 class="modal-title" id="myModalLabel2">Delete Admin User</h4>
                                             </div>
                                             <div class="modal-body">
                                                 <p>Are you sure you want to delete this record?</p>
@@ -64,11 +61,11 @@
                                 </div>
 
                                 {!! Form::close() !!}
-                            @endcan
-                        </td>
+                        @endcan
+                    </td>
                     @endcan
                 </tr>
-            @endforeach
+                @endforeach
             </tbody>
         </table>
     </div>

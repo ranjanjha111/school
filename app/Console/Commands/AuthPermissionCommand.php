@@ -52,7 +52,7 @@ class AuthPermissionCommand extends Command
         } else {
             // create permissions
             foreach ($permissions as $permission) {
-                Permission::firstOrCreate(['name' => $permission ]);
+                Permission::firstOrCreate(['name' => $permission, 'guard_name' => 'admin' ]);
             }
 
             $this->info('Permissions ' . implode(', ', $permissions) . ' created.');

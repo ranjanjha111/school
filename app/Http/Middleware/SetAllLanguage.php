@@ -15,7 +15,7 @@ class SetAllLanguage
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, $guard = null)
     {
         if(!$request->session()->has('languages')) {
             $languages  = Language::getAllActiveLanguage();

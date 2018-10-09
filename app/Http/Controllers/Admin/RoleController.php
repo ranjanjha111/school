@@ -53,7 +53,7 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, ['name' => 'required|unique:roles']);
-        if(Role::create($request->only('name'))) {
+        if(Role::create(['name' => $request->name, 'guard_name' => $request->guard_name])) {
             $request->session()->flash('success', 'Role has been created successfully.');
         } else {
             $request->session()->flash('danger', 'Role has not been created.');
@@ -71,7 +71,7 @@ class RoleController extends Controller
     public function show($id)
     {
         $role           = Role::find($id);
-        $permissions    = Permission::all();
+        $permissions    = Permission::where('guard_name', $role->guard_name)->get();
         if (request()->ajax()) {
             return view('admin.role.show', ['role' => $role, 'permissions' => $permissions, 'id' => $id, 'modalClass' => request()->get('modalClass')])->render();
         }
@@ -88,7 +88,7 @@ class RoleController extends Controller
     public function edit($id)
     {
         $role           = Role::find($id);
-        $permissions    = Permission::all();
+        $permissions    = Permission::where('guard_name', $role->guard_name)->get();
 
         return view('admin.role.edit', compact('role', 'permissions'));
     }

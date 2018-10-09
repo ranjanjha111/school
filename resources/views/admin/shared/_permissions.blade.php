@@ -21,7 +21,7 @@
             if (isset($role)) {
                 $per_found = $role->hasPermissionTo($permission->name);
             }
-            if (isset($user)) {
+            if (isset($user) && empty($per_found)) {
                 $per_found = $user->hasDirectPermission($permission->name);
             }
 

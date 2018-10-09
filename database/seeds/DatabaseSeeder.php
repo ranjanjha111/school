@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\User;
+use App\AdminUser;
 use App\Role;
 use App\Permission;
 
@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
         $permissions = Permission::defaultPermissions();
 
         foreach ($permissions as $perms) {
-            Permission::firstOrCreate(['name' => $perms]);
+            Permission::firstOrCreate(['name' => $perms, 'guard_name' => 'admin']);
         }
 
         $this->command->info('Default Permissions added.');
@@ -41,14 +41,14 @@ class DatabaseSeeder extends Seeder
         if ($this->command->confirm('Create Roles for user, default is admin and user? [y|N]', true)) {
 
             // Ask for roles from input
-            $input_roles = $this->command->ask('Enter roles in comma separate format.', 'Admin,User');
+            $input_roles = $this->command->ask('Enter roles in comma separate format.', 'Admin, User');
 
             // Explode roles
             $roles_array = explode(',', $input_roles);
 
             // add roles
             foreach($roles_array as $role) {
-                $role = Role::firstOrCreate(['name' => trim($role)]);
+                $role = Role::firstOrCreate(['name' => trim($role), 'guard_name' => 'admin']);
 
                 if( $role->name == 'Admin' ) {
                     // assign all permissions
@@ -69,12 +69,6 @@ class DatabaseSeeder extends Seeder
             Role::firstOrCreate(['name' => 'User']);
             $this->command->info('Added only default user role.');
         }
-
-
-//        // now lets seed some posts for demo
-//        factory(\App\Post::class, 30)->create();
-//        $this->command->info('Some Posts data seeded.');
-//        $this->command->warn('All done :)');
     }
 
     /**
@@ -104,7 +98,7 @@ class DatabaseSeeder extends Seeder
 
 
 
-        $user = factory(User::class)->create();
+        $user = factory(AdminUser::class)->create();
         $user->assignRole($role->name);
 
         if( $role->name == 'Admin' ) {

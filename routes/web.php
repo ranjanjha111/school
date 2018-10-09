@@ -17,11 +17,30 @@ Route::get('/', function () {
 
 Auth::routes();
 
+
+//==================TEST===================
+
+
+//=========================================
+
+
+/*
+ * Admin login
+ */
+Route::prefix('admin')->group(function() {
+    Route::get('/login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
+    Route::post('/login', 'Auth\AdminLoginController@login')->name('admin.login.submit');
+    Route::post('/logout', 'Auth\AdminLoginController@logout')->name('admin.logout');
+
+    Route::get('/home', 'Admin\AdminController@index')->name('admin.home');
+});
+
 /*
  * Admin routes for authenticated user only
  */
-Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['auth', 'languages']], function() {
+Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['auth:admin', 'languages:admin']], function() {
     Route::resource('dashboard', 'DashboardController');
+    Route::resource('admins', 'AdminController');
     Route::resource('users', 'UserController');
     Route::resource('roles', 'RoleController');
     Route::resource('languages', 'LanguageController');
@@ -30,38 +49,27 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
     Route::resource('activities', 'ActivityController');
     Route::resource('teams', 'TeamController');
     Route::resource('nutritions', 'NutritionController');
-
 });
 
 /*
  * Guardian routes for authenticated user only
  */
-Route::prefix('guardian')->group(function() {
-    Route::get('/login', 'Auth\GuardianLoginController@showLoginForm')->name('guardian.login');
-    Route::post('/login', 'Auth\GuardianLoginController@login')->name('guardian.login.submit');
-    Route::get('/home', 'GuardianController@index')->name('guardian.home');
-
-});
+//Route::prefix('guardian')->group(function() {
+//    Route::get('/login', 'Auth\GuardianLoginController@showLoginForm')->name('guardian.login');
+//    Route::post('/login', 'Auth\GuardianLoginController@login')->name('guardian.login.submit');
+//    Route::get('/home', 'GuardianController@index')->name('guardian.home');
+//
+//});
 
 /*
  * Non-authenticated routes
  */
-Route::get('/home', 'HomeController@index')->name('home');
+//Route::get('/home', 'HomeController@index')->name('home');
 
 
 
 
-/*
- * ==================TEST==================
- */
-//Route::get('/', function () {
-//    return view('layouts.app');
-//});
 
-
-
-
-//=========================================
 
 
 

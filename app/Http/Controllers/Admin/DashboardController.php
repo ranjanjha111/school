@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
+    protected function guard(){
+        return Auth::guard('admin');
+    }
+
     /**
      * Display a listing of the resource.
      *

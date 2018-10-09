@@ -6,38 +6,49 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Auth;
 use View;
 
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    protected function guard(){
+        return Auth::guard('admin');
+    }
+
     public function __construct()
     {
+        $guardName  = array(
+            'admin' => 'Admin',
+            'web'   => 'Web'
+        );
+
         $status     = array(
             ''      => 'Please select a status',
             '0'     => 'Inactive',
             '1'     => 'Active'
         );
 
-//        $showRecords    = array(
-//            '10'    => 10,
-//            '25'    => 25,
-//            '50'    => 50,
-//            '100'   => 100
-//        );
-
         $showRecords    = array(
-            '1'     => 1,
-            '2'     => 2,
-            '3'     => 3,
-            '4'     => 4
+            '10'    => 10,
+            '25'    => 25,
+            '50'    => 50,
+            '100'   => 100
         );
+
+//        $showRecords    = array(
+//            '1'     => 1,
+//            '2'     => 2,
+//            '3'     => 3,
+//            '4'     => 4
+//        );
 
 //        $languages  = request()->session()->get('languages');
 
         View::share('status', $status);
         View::share('showRecords', $showRecords);
+        View::share('guardName', $guardName);
 
     }
 

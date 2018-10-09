@@ -7,16 +7,16 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 
-
-class GuardianLoginController extends Controller
+class AdminLoginController extends Controller
 {
     use AuthenticatesUsers;
+
     /**
      * Where to redirect users after login.
      *
      * @var string
      */
-    protected $redirectTo = '/guardian/dashboard';
+    protected $redirectTo = '/admin/dashboard';
 
     /**
      * Create a new controller instance.
@@ -25,7 +25,11 @@ class GuardianLoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest:guardian')->except('logout');
+        $this->middleware('guest:admin')->except('logout');
+    }
+
+    protected function guard(){
+        return Auth::guard('admin');
     }
 
     /**
@@ -35,10 +39,14 @@ class GuardianLoginController extends Controller
      */
     public function showLoginForm()
     {
-        return view('auth.guardian-login');
+        return view('auth.admin-login');
     }
 
-    protected function guard(){
-        return Auth::guard('guardian');
+    /**
+     * Log the user out of the application.
+     */
+    public function logout() {
+        Auth::guard('admin')->logout();
+        return redirect('admin/login');
     }
 }

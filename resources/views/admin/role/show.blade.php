@@ -14,6 +14,13 @@
                         <div class="control-div col-md-6 col-sm-6 col-xs-12">
                             {{ $role->name }}
                         </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Guard Name</label>
+                        <div class="control-div col-md-6 col-sm-6 col-xs-12">
+                            {{ $role->guard_name }}
+                        </div>
                     </div><br />
 
                     <div class="x_panel">

@@ -14,12 +14,12 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard'     => 'web',
         'passwords' => 'users',
     ],
-    'guardian' => [
-        'driver' => 'eloquent',
-        'model' => App\Guardian::class,
+    'admins' => [
+        'driver'    => 'eloquent',
+        'model'     => App\AdminUser::class,
     ],
 
     /*
@@ -49,13 +49,13 @@ return [
             'driver'    => 'passport',
             'provider'  => 'users',
         ],
-        'guardian' => [
-            'driver' => 'session',
-            'provider' => 'guardian',
+        'admin' => [
+            'driver'    => 'session',
+            'provider'  => 'admins',
         ],
-        'guardian-api' => [
-            'driver' => 'passport',
-            'provider' => 'guardian',
+        'admin-api' => [
+            'driver'    => 'passport',
+            'provider'  => 'admins',
         ],
     ],
 
@@ -78,13 +78,13 @@ return [
 
     'providers' => [
         'users' => [
-            'driver' => 'eloquent',
-            'model' => App\User::class,
+            'driver'    => 'eloquent',
+            'model'     => App\User::class,
         ],
 
-        'guardian' => [
-            'driver' => 'eloquent',
-            'model' => App\Guardian::class,
+        'admins' => [
+            'driver'    => 'eloquent',
+            'model'     => App\AdminUser::class,
         ],
 
         // 'users' => [
@@ -110,9 +110,14 @@ return [
 
     'passwords' => [
         'users' => [
-            'provider' => 'users',
-            'table' => 'password_resets',
-            'expire' => 60,
+            'provider'  => 'users',
+            'table'     => 'password_resets',
+            'expire'    => 60,
+        ],
+        'admins' => [
+            'provider'  => 'admins',
+            'table'     => 'password_resets',
+            'expire'    => 60,
         ],
     ],
 

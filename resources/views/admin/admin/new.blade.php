@@ -9,22 +9,18 @@
     <div class="">
         <div class="page-title">
             <div class="title_left">
-                <h3>Add New Language</h3>
+                <h3>Add New Admin</h3>
             </div>
 
             <div class="title_right">
                 <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
                     <div class="input-group" style='float:right;'>
-                        <a href="{{ route('languages.index') }}" class="btn btn-primary">List Language</a>
+                        <a href="{{ route('admins.index') }}" class="btn btn-primary"> List Admin</a>
                     </div>
                 </div>
             </div>
         </div>
-
         <div class="clearfix"></div>
-
-        {{--Notification Message--}}
-        @include('admin.layouts.message')
 
         <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
@@ -32,8 +28,8 @@
                     <div class="x_content">
                         <br />
 
-                        {!! Form::open(['route' => ['languages.store'], 'class' => 'form-horizontal form-label-left', 'enctype'=>'multipart/form-data']) !!}
-                        @include('admin.language._form')
+                        {!! Form::open(['route' => ['admins.store'], 'class' => 'form-horizontal form-label-left']) !!}
+                        @include('admin.admin._form')
 
                         <!-- Submit Form Button -->
                         <div class="ln_solid"></div>
@@ -43,6 +39,9 @@
                                 {!! Form::reset('Reset', ['class' => 'btn btn-primary']) !!}
                             </div>
                         </div>
+
+                        {{--<h2>{{'Overried ' . $role->name . ' Permission' }}</h2>--}}
+                        {{--@include('admin.shared._permissions')--}}
 
                         {!! Form::close() !!}
 
@@ -56,5 +55,7 @@
 @endsection
 
 @section('adminFooterScript')
-
+    <!-- iCheck -->
+    <script src="{{ asset('admin/vendors/iCheck/icheck.min.js') }}"></script>
+    <script src="{{ asset('js/custom.js') }}"></script>
 @endsection

@@ -30,6 +30,14 @@
                             <li><a href="{{ route('dashboard.index') }}">Dashboard</a></li>
                         </ul>
                     </li>
+                    <li><a><i class="fa fa-user"></i> Manage Admin <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a href="{{ route('admins.index') }}">List Admin</a></li>
+                            @can('add_admins')
+                                <li><a href="{{ route('admins.create') }}">Add New Admin</a></li>
+                            @endcan
+                        </ul>
+                    </li>
                     <li><a><i class="fa fa-user"></i> Manage User <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             <li><a href="{{ route('users.index') }}">List User</a></li>
@@ -76,14 +84,6 @@
                         </ul>
                     </li>
 
-                    {{--<li><a><i class="fa fa-server" aria-hidden="true"></i> Manage Featured <span class="fa fa-chevron-down"></span></a>--}}
-                    {{--<ul class="nav child_menu">--}}
-                    {{--<li><a href="{{ route('feature.index') }}">List Featured</a></li>       --}}
-                    {{--@can('add_users')--}}
-                    {{--<li><a href="{{ route('feature.create') }}">Add New Featured</a></li>    --}}
-                    {{--@endcan--}}
-                    {{--</ul>--}}
-                    {{--</li>--}}
                     <li><a><i class="fa fa-history" aria-hidden="true"></i> Manage Activity <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             <li><a href="{{ route('activities.index') }}">List Activity</a></li>
@@ -92,14 +92,22 @@
                             @endcan
                         </ul>
                     </li>
-                    <li><a><i class="fa fa-universal-access" aria-hidden="true"></i> Manage Nutrition <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                    <li><a href="{{ route('nutritions.index') }}">List Nutrition</a></li>
-                    @can('add_users')
-                    <li><a href="{{ route('nutritions.create') }}">Add New Nutrition</a></li>
-                    @endcan
-                    </ul>
-                    </li>
+                    {{--<li><a><i class="fa fa-universal-access" aria-hidden="true"></i> Manage Nutrition <span class="fa fa-chevron-down"></span></a>--}}
+                    {{--<ul class="nav child_menu">--}}
+                    {{--<li><a href="{{ route('nutritions.index') }}">List Nutrition</a></li>--}}
+                    {{--@can('add_users')--}}
+                    {{--<li><a href="{{ route('nutritions.create') }}">Add New Nutrition</a></li>--}}
+                    {{--@endcan--}}
+                    {{--</ul>--}}
+                    {{--</li>--}}
+
+
+
+
+
+
+
+
                     {{--<li><a><i class="fa fa-tasks" aria-hidden="true"></i> Manage Program <span class="fa fa-chevron-down"></span></a>--}}
                     {{--<ul class="nav child_menu">--}}
                     {{--<li><a href="{{ route('programs.index') }}">List Program</a></li>       --}}
