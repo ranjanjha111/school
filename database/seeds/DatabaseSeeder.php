@@ -38,10 +38,10 @@ class DatabaseSeeder extends Seeder
         $this->command->info('Default Permissions added.');
 
         // Confirm roles needed
-        if ($this->command->confirm('Create Roles for user, default is admin and user? [y|N]', true)) {
+        if ($this->command->confirm('Create Roles for user, default is superadmin and admin? [y|N]', true)) {
 
             // Ask for roles from input
-            $input_roles = $this->command->ask('Enter roles in comma separate format.', 'Admin, User');
+            $input_roles = $this->command->ask('Enter roles in comma separate format.', 'Superadmin, Admin');
 
             // Explode roles
             $roles_array = explode(',', $input_roles);
@@ -50,13 +50,13 @@ class DatabaseSeeder extends Seeder
             foreach($roles_array as $role) {
                 $role = Role::firstOrCreate(['name' => trim($role), 'guard_name' => 'admin']);
 
-                if( $role->name == 'Admin' ) {
+                if( $role->name == 'Superadmin' ) {
                     // assign all permissions
                     $role->syncPermissions(Permission::all());
                     $this->command->info('Admin granted all the permissions');
                 } else {
                     // for others by default only read access
-                    $role->syncPermissions(Permission::where('name', 'LIKE', 'view_%')->get());
+                    $role->syncPermissions(Permission::where('name', 'LIKE', '%_users')->get());
                 }
 
                 // create one user for each role
@@ -66,7 +66,7 @@ class DatabaseSeeder extends Seeder
             $this->command->info('Roles ' . $input_roles . ' added successfully');
 
         } else {
-            Role::firstOrCreate(['name' => 'User']);
+            Role::firstOrCreate(['name' => 'Admin', 'guard_name' => 'admin']);
             $this->command->info('Added only default user role.');
         }
     }

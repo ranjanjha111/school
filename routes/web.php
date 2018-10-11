@@ -19,7 +19,24 @@ Auth::routes();
 
 
 //==================TEST===================
+use App\Menu;
+Route::get('menu/add', function() {
+    exit;
+//    Menu::create(['name' => 'Manage User', 'menu_id' => 0, 'permission_id' => null, 'menu_order' => 0, 'status' => '1', 'created_by' => 1]);
 
+    Menu::create(['name' => 'List User', 'menu_id' => 1, 'permission_id' => 5, 'menu_order' => 0, 'status' => '1', 'created_by' => 1]);
+    Menu::create(['name' => 'Add New User', 'menu_id' => 1, 'permission_id' => 6, 'menu_order' => 0, 'status' => '1', 'created_by' => 1]);
+});
+
+Route::get('menu/list', function() {
+    $abilities = [
+        'view'      => 'index',
+        'add'       => 'create',
+        'edit'      => 'edit',
+        'delete'    => 'destroy'
+    ];
+
+});
 
 //=========================================
 
@@ -32,13 +49,13 @@ Route::prefix('admin')->group(function() {
     Route::post('/login', 'Auth\AdminLoginController@login')->name('admin.login.submit');
     Route::post('/logout', 'Auth\AdminLoginController@logout')->name('admin.logout');
 
-    Route::get('/home', 'Admin\AdminController@index')->name('admin.home');
+//    Route::get('/home', 'Admin\AdminController@index')->name('admin.home');
 });
 
 /*
  * Admin routes for authenticated user only
  */
-Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['auth:admin', 'languages:admin']], function() {
+Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['auth:admin', 'languages:admin', 'menu:admin']], function() {
     Route::resource('dashboard', 'DashboardController');
     Route::resource('admins', 'AdminController');
     Route::resource('users', 'UserController');
@@ -49,17 +66,9 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
     Route::resource('activities', 'ActivityController');
     Route::resource('teams', 'TeamController');
     Route::resource('nutritions', 'NutritionController');
-});
+    Route::resource('menus', 'MenuController');
 
-/*
- * Guardian routes for authenticated user only
- */
-//Route::prefix('guardian')->group(function() {
-//    Route::get('/login', 'Auth\GuardianLoginController@showLoginForm')->name('guardian.login');
-//    Route::post('/login', 'Auth\GuardianLoginController@login')->name('guardian.login.submit');
-//    Route::get('/home', 'GuardianController@index')->name('guardian.home');
-//
-//});
+});
 
 /*
  * Non-authenticated routes

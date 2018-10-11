@@ -5,42 +5,54 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
                 </button>
-                <h4 class="modal-title" id="myModalLabel">View Activity</h4>
+                <h4 class="modal-title" id="myModalLabel">View Menu</h4>
             </div>
             <div class="modal-body">
                 <div class="form-horizontal">
-                    @foreach(request()->session()->get('languages') as $lang => $language)
-                        <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Name</label>
-                            <div class="control-div col-md-6 col-sm-6 col-xs-12">
-                                {{ $activity->getTranslation($lang)->name }}
-                            </div>
-                            <div class='control-label col-md-3 col-sm-3 col-xs-3'>
-                                <img src="{{ $language['flag'] }}" class="pull-left img-responsive" alt="{{$language['name']}} Flag" width="25" height="20">
-                            </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Name</label>
+                        <div class="control-div col-md-6 col-sm-6 col-xs-12">
+                            {{ $menu->name }}
                         </div>
-                    @endforeach
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Parent Menu</label>
+                        <div class="control-div col-md-6 col-sm-6 col-xs-12">
+                            {{ $menu->rootMenu()->first()->name ?? '-' }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Permission</label>
+                        <div class="control-div col-md-6 col-sm-6 col-xs-12">
+                            {{ $menu->menuRoutes()->first()->name ?? '-' }}
+                        </div>
+                    </div>
 
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Status</label>
                         <div class="control-div col-md-6 col-sm-6 col-xs-12">
-                            {{ $activity->status ? 'Active' : 'Inactive' }}
+                            {{ ($menu->status == 1) ? 'Active' : 'Inactive' }}
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Created</label>
                         <div class="control-div col-md-6 col-sm-6 col-xs-12">
-                            {{ $activity->created_at }}
+                            {{ $menu->created_at }}
                         </div>
                     </div>
 
+                    <!--Roles Form Input-->
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Last Updated</label>
                         <div class="control-div col-md-6 col-sm-6 col-xs-12">
-                            {{ $activity->updated_at }}
+                            {{ $menu->updated_at }}
                         </div>
                     </div>
+
+
                 </div>
 
             </div>

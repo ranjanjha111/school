@@ -3,37 +3,36 @@
         <table class="table table-striped jambo_table bulk_action">
             <thead>
                 <tr class="headings">
-                    <th class="column-title col-md-1">Id</th>
-                    <th class="column-title col-md-2">Name</th>
-                    <th class="column-title col-md-3">Email</th>
-                    <th class="column-title col-md-2">Role</th>
+                    <th class="column-title col-md-1">#</th>
+                    <th class="column-title col-md-3">Name</th>
+                    <th class="column-title col-md-2">Parent Menu</th>
+                    <th class="column-title col-md-2">Permission</th>
                     <th class="column-title col-md-1">Status</th>
-                    @can('view_admins', 'edit_admins', 'delete_admins')
+                    @can('view_menus', 'edit_menus', 'delete_menus')
                         <th class="column-title text-center col-md-3">Actions</th>
                     @endcan
                 </tr>
             </thead>
-
             <tbody>
-                @foreach($result as $item)
+                @foreach($result as $key => $item)
                 <tr>
-                    <td class="col-md-1">{{ $item->id }}</td>
-                    <td class="col-md-2">{{ $item->name }}</td>
-                    <td class="col-md-3">{{ $item->email }}</td>
-                    <td class="col-md-2">{{ $item->roles->implode('name', ', ') }}</td>
+                    <td class="col-md-1">{{ $key + 1 }}</td>
+                    <td class="col-md-3">{{ $item->name }}</td>
+                    <td class="col-md-2">{{ $item->rootMenu()->first()->name ?? '-' }}</td>
+                    <td class="col-md-2">{{ $item->menuRoutes()->first()->name ?? '-' }}</td>
                     <td class="col-md-1">{{ ($item->status == 1) ? 'Active' : 'Inactive' }}</td>
-                    @can('view_admins', 'edit_admins', 'delete_admins')
-                        @include('admin.shared._actions', ['entity' => 'admins', 'id' => $item->id])
+                    @can('view_menus', 'edit_menus', 'delete_menus')
+                        @include('admin.shared._actions', ['entity' => 'menus', 'id' => $item->id])
                     @endcan
                 </tr>
-                @endforeach
+            @endforeach
             </tbody>
         </table>
     </div>
 </div>
 
 <?php
-$recordPerPage  = request()->session()->get('recordPerPage') ?? 1;
+    $recordPerPage  = request()->session()->get('recordPerPage') ?? 1;
 ?>
 
 <div class="form-group col-sm-6 col-md-6" style="margin: 20px 0">

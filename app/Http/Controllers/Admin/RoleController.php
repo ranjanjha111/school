@@ -104,7 +104,7 @@ class RoleController extends Controller
     {
         if($role = Role::findOrFail($id)) {
             // admin role has everything
-            if($role->name === 'Admin') {
+            if($role->name === 'Superadmin') {
                 $role->syncPermissions(Permission::all());
                 return redirect()->route('roles.index');
             }

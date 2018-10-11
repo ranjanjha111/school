@@ -11,7 +11,7 @@ use App\User;
 
 class UserController extends Controller
 {
-    use Authorizable;
+//    use Authorizable;
 
 //    protected $guard = 'web';
 
@@ -55,7 +55,7 @@ class UserController extends Controller
     {
         $this->validate($request, [
             'name'      => 'bail|required|min:2',
-            'email'     => 'required|email|unique:users',
+            'email'     => 'required|email|unique:users,email',
             'password'  => 'required|min:6',
             'roles'     => 'required|min:1',
             'status'    => 'required'

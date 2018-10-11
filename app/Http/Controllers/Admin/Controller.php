@@ -8,6 +8,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
 use View;
+use App\Menu;
 
 class Controller extends BaseController
 {
@@ -37,19 +38,9 @@ class Controller extends BaseController
             '100'   => 100
         );
 
-//        $showRecords    = array(
-//            '1'     => 1,
-//            '2'     => 2,
-//            '3'     => 3,
-//            '4'     => 4
-//        );
-
-//        $languages  = request()->session()->get('languages');
-
         View::share('status', $status);
         View::share('showRecords', $showRecords);
         View::share('guardName', $guardName);
-
     }
 
     public function validateTranslator($request, $langValidation = array(), $normalValidation = array()) {

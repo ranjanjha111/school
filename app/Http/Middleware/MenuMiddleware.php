@@ -3,10 +3,9 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\Language;
-use Illuminate\Support\Facades\Lang;
+use App\Menu;
 
-class SetAllLanguage
+class MenuMiddleware
 {
     /**
      * Handle an incoming request.
@@ -17,9 +16,9 @@ class SetAllLanguage
      */
     public function handle($request, Closure $next)
     {
-        if(!$request->session()->has('languages')) {
-            $languages  = Language::getAllActiveLanguage();
-            $request->session()->put('languages', $languages);
+        if(!$request->session()->has('menu')) {
+            $menu   = Menu::getAdminMenu();
+            $request->session()->put('menu', $menu);
         }
 
         return $next($request);

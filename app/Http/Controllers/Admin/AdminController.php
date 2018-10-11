@@ -54,7 +54,7 @@ class AdminController extends Controller
     {
         $this->validate($request, [
             'name'      => 'bail|required|min:2',
-            'email'     => 'required|email|unique:users',
+            'email'     => 'required|email|unique:admin_users,email',
             'password'  => 'required|min:6',
             'roles'     => 'required|min:1',
             'status'    => 'required'
@@ -122,7 +122,7 @@ class AdminController extends Controller
     {
         $this->validate($request, [
             'name'      => 'bail|required|min:2',
-            'email'     => 'required|email|unique:users,email,' . $id,
+            'email'     => 'required|email|unique:admin_users,email,' . $id,
             'roles'     => 'required|min:1',
             'status'    => 'required'
         ]);

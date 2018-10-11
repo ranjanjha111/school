@@ -17,81 +17,107 @@
             </div>
         </div>
         <!-- /menu profile quick info -->
-
         <br />
 
         <!-- sidebar menu -->
         <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
             <div class="menu_section">
-                <h3>General</h3>
+                {{--<h3>General</h3>--}}
                 <ul class="nav side-menu">
-                    <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li><a href="{{ route('dashboard.index') }}">Dashboard</a></li>
-                        </ul>
-                    </li>
-                    <li><a><i class="fa fa-user"></i> Manage Admin <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li><a href="{{ route('admins.index') }}">List Admin</a></li>
-                            @can('add_admins')
-                                <li><a href="{{ route('admins.create') }}">Add New Admin</a></li>
-                            @endcan
-                        </ul>
-                    </li>
-                    <li><a><i class="fa fa-user"></i> Manage User <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li><a href="{{ route('users.index') }}">List User</a></li>
-                            @can('add_users')
-                                <li><a href="{{ route('users.create') }}">Add New User</a></li>
-                            @endcan
-                        </ul>
-                    </li>
-                    <li><a><i class="fa fa-key"></i> Manage Role <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li><a href="{{ route('roles.index') }}">List Role</a></li>
-                            @can('add_users')
-                                <li><a href="{{ route('roles.create') }}">Add New Role</a></li>
-                            @endcan
-                        </ul>
-                    </li>
-                    <li><a><i class="fa fa-users" aria-hidden="true"></i>Manage Language <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li><a href="{{ route('languages.index') }}">List Language</a></li>
-                            <li><a href="{{ route('languages.create') }}">Add New Language</a></li>
-                        </ul>
-                    </li>
-                    <li><a><i class="fa fa-users" aria-hidden="true"></i>Manage Team <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li><a href="{{ route('teams.index') }}">List Team</a></li>
-                            <li><a href="{{ route('teams.create') }}">Add New Team</a></li>
-                        </ul>
-                    </li>
 
-                    <li><a><i class="fa fa-flag" aria-hidden="true"></i> Manage State <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li><a href="{{ route('states.index') }}">List State</a></li>
-                            @can('add_users')
-                                <li><a href="{{ route('states.create') }}">Add State</a></li>
-                            @endcan
-                        </ul>
-                    </li>
-                    <li><a><i class="fa fa-building"></i> Manage City <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li><a href="{{ route('city.index') }}">List City</a></li>
-                            @can('add_users')
-                                <li><a href="{{ route('city.create') }}">Add New City</a></li>
-                            @endcan
-                        </ul>
-                    </li>
+                @foreach(request()->session()->get('menu') as $menu)
+                    @if($menu['hasSubMenu'])
+                        <li><a><i class="{{ $menu['image'] }}"></i> {{$menu['name']}} <span class="fa fa-chevron-down"></span></a><ul class="nav child_menu">
+                            @foreach($menu['subMenu'] as $subMenu)
+                                @if(!empty($subMenu['routeName']))
+                                @can($subMenu['permission'])
+                                <li><a href="{{ route($subMenu['routeName']) }}"> {{ $subMenu['name'] }} </a></li>
+                                @endcan
+                                @endif
+                            @endforeach
+                        </ul></li>
+                    @else
+                        @can($menu['permission'])
+                        <li><a href="{{ route($menu['routeName']) }}"><i class="{{ $menu['image'] }}"></i> {{ $menu['name'] }} </a></li>
+                        @endcan
+                    @endif
+                @endforeach
 
-                    <li><a><i class="fa fa-history" aria-hidden="true"></i> Manage Activity <span class="fa fa-chevron-down"></span></a>
-                        <ul class="nav child_menu">
-                            <li><a href="{{ route('activities.index') }}">List Activity</a></li>
-                            @can('add_users')
-                                <li><a href="{{ route('activities.create') }}">Add New Activity</a></li>
-                            @endcan
-                        </ul>
-                    </li>
+
+
+
+                        {{--<li><a href="{{ route('dashboard.index') }}"><i class="fa fa-home"></i> Dashboard </a></li>--}}
+
+                    {{--<li><a><i class="fa fa-user"></i> Manage Menu <span class="fa fa-chevron-down"></span></a>--}}
+                        {{--<ul class="nav child_menu">--}}
+                            {{--<li><a href="{{ route('menus.index') }}">List Menu</a></li>--}}
+                            {{--@can('add_admins')--}}
+                                {{--<li><a href="{{ route('menus.create') }}">Add New Menu</a></li>--}}
+                            {{--@endcan--}}
+                        {{--</ul>--}}
+                    {{--</li>--}}
+                    {{--<li><a><i class="fa fa-user"></i> Manage Admin <span class="fa fa-chevron-down"></span></a>--}}
+                        {{--<ul class="nav child_menu">--}}
+                            {{--<li><a href="{{ route('admins.index') }}">List Admin</a></li>--}}
+                            {{--@can('add_admins')--}}
+                                {{--<li><a href="{{ route('admins.create') }}">Add New Admin</a></li>--}}
+                            {{--@endcan--}}
+                        {{--</ul>--}}
+                    {{--</li>--}}
+                    {{--<li><a><i class="fa fa-user"></i> Manage User <span class="fa fa-chevron-down"></span></a>--}}
+                        {{--<ul class="nav child_menu">--}}
+                            {{--<li><a href="{{ route('users.index') }}">List User</a></li>--}}
+                            {{--@can('add_users')--}}
+                                {{--<li><a href="{{ route('users.create') }}">Add New User</a></li>--}}
+                            {{--@endcan--}}
+                        {{--</ul>--}}
+                    {{--</li>--}}
+                    {{--<li><a><i class="fa fa-key"></i> Manage Role <span class="fa fa-chevron-down"></span></a>--}}
+                        {{--<ul class="nav child_menu">--}}
+                            {{--<li><a href="{{ route('roles.index') }}">List Role</a></li>--}}
+                            {{--@can('add_users')--}}
+                                {{--<li><a href="{{ route('roles.create') }}">Add New Role</a></li>--}}
+                            {{--@endcan--}}
+                        {{--</ul>--}}
+                    {{--</li>--}}
+                    {{--<li><a><i class="fa fa-users" aria-hidden="true"></i>Manage Language <span class="fa fa-chevron-down"></span></a>--}}
+                        {{--<ul class="nav child_menu">--}}
+                            {{--<li><a href="{{ route('languages.index') }}">List Language</a></li>--}}
+                            {{--<li><a href="{{ route('languages.create') }}">Add New Language</a></li>--}}
+                        {{--</ul>--}}
+                    {{--</li>--}}
+                    {{--<li><a><i class="fa fa-users" aria-hidden="true"></i>Manage Team <span class="fa fa-chevron-down"></span></a>--}}
+                        {{--<ul class="nav child_menu">--}}
+                            {{--<li><a href="{{ route('teams.index') }}">List Team</a></li>--}}
+                            {{--<li><a href="{{ route('teams.create') }}">Add New Team</a></li>--}}
+                        {{--</ul>--}}
+                    {{--</li>--}}
+
+                    {{--<li><a><i class="fa fa-flag" aria-hidden="true"></i> Manage State <span class="fa fa-chevron-down"></span></a>--}}
+                        {{--<ul class="nav child_menu">--}}
+                            {{--<li><a href="{{ route('states.index') }}">List State</a></li>--}}
+                            {{--@can('add_users')--}}
+                                {{--<li><a href="{{ route('states.create') }}">Add State</a></li>--}}
+                            {{--@endcan--}}
+                        {{--</ul>--}}
+                    {{--</li>--}}
+                    {{--<li><a><i class="fa fa-building"></i> Manage City <span class="fa fa-chevron-down"></span></a>--}}
+                        {{--<ul class="nav child_menu">--}}
+                            {{--<li><a href="{{ route('city.index') }}">List City</a></li>--}}
+                            {{--@can('add_users')--}}
+                                {{--<li><a href="{{ route('city.create') }}">Add New City</a></li>--}}
+                            {{--@endcan--}}
+                        {{--</ul>--}}
+                    {{--</li>--}}
+
+                    {{--<li><a><i class="fa fa-history" aria-hidden="true"></i> Manage Activity <span class="fa fa-chevron-down"></span></a>--}}
+                        {{--<ul class="nav child_menu">--}}
+                            {{--<li><a href="{{ route('activities.index') }}">List Activity</a></li>--}}
+                            {{--@can('add_users')--}}
+                                {{--<li><a href="{{ route('activities.create') }}">Add New Activity</a></li>--}}
+                            {{--@endcan--}}
+                        {{--</ul>--}}
+                    {{--</li>--}}
                     {{--<li><a><i class="fa fa-universal-access" aria-hidden="true"></i> Manage Nutrition <span class="fa fa-chevron-down"></span></a>--}}
                     {{--<ul class="nav child_menu">--}}
                     {{--<li><a href="{{ route('nutritions.index') }}">List Nutrition</a></li>--}}

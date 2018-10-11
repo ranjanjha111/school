@@ -23,46 +23,7 @@
                     <td class="col-md-2">{{ $item->roles->implode('name', ', ') }}</td>
                     <td class="col-md-1">{{ ($item->status == 1) ? 'Active' : 'Inactive' }}</td>
                     @can('view_users', 'edit_users', 'delete_users')
-                    <td class="text-center col-md-3">
-                        @can('view_users')
-                            <button type="button" class="btn btn-xs btn-default viewBtn" view-modal-class="view-modal-{{$item->id}}" view-id="{{$item->id}}">
-                                <i class="fa fa-eye"> View</i>
-                            </button>
-                        @endcan
-
-                        @can('edit_users')
-                        <a href="{{ route('users.edit', [str_singular('users') => $item->id])  }}" class="btn btn-xs btn-info">
-                            <i class="fa fa-edit"></i> Edit</a>
-                        @endcan
-
-                        @can('delete_users')
-                        {!! Form::open( ['method' => 'delete', 'url' => route('users.destroy', ['user' => $item->id]), 'style' => 'display: inline']) !!}
-                                <button type="button" class="btn btn-xs btn-danger deleteBtn" delete-modal-class="delete-modal-{{$item->id}}">
-                                    <i class="fa fa-trash-o"> Delete</i>
-                                </button>
-
-                                <div class="modal fade delete-modal-{{$item->id}}" tabindex="-1" role="dialog" aria-hidden="true">
-                                    <div class="modal-dialog modal-sm">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
-                                                </button>
-                                                <h4 class="modal-title" id="myModalLabel2">Delete Activity</h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p>Are you sure you want to delete this record?</p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                <button type="submit" id="delete_item" class="btn btn-danger">Delete</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {!! Form::close() !!}
-                        @endcan
-                    </td>
+                        @include('admin.shared._actions', ['entity' => 'users', 'id' => $item->id])
                     @endcan
                 </tr>
                 @endforeach
