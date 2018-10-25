@@ -53,7 +53,7 @@ class DatabaseSeeder extends Seeder
                 if( $role->name == 'Superadmin' ) {
                     // assign all permissions
                     $role->syncPermissions(Permission::all());
-                    $this->command->info('Admin granted all the permissions');
+                    $this->command->info($role->name . 'granted all the permissions');
                 } else {
                     // for others by default only read access
                     $role->syncPermissions(Permission::where('name', 'LIKE', '%_users')->get());

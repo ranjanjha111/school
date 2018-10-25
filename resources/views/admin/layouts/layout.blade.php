@@ -49,6 +49,13 @@
     
     <script src="{{ asset('admin/vendors/jquery/dist/jquery.timepicker.min.js') }}"></script>
 
+    <script>
+        var baseUrl         = "{{ url('/') }}";
+        var adminBaseUrl    = "{{ url('/admin') }}";
+        var apiBaseUrl      = "{{ url('/api') }}";
+
+    </script>
+
     {{--<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>--}}
     @auth
         @include('admin.layouts.footer')

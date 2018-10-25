@@ -73,7 +73,7 @@ class Menu extends Model
      * Get menu route.
      */
     public static function getAdminMenu() {
-        $menus  = Menu::where('status', '1')->where('menu_id', self::ROOT_MENU_ID)->get();
+        $menus  = Menu::where('status', '1')->where('menu_id', self::ROOT_MENU_ID)->orderBy('menu_order', 'asc')->get();
         $menuList   = array();
         foreach($menus as $key => $menu) {
             if($menu->submenu()->where('status', '1')->count()) {

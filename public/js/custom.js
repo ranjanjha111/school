@@ -94,6 +94,7 @@ $(function() {
             $('.x_content').after(data);
             $('.' + modalClass).modal('toggle');
         }).fail(function (error) {
+            console.log(error.responseText);
             alert('Data could not be loaded.');
         });
     });
@@ -108,7 +109,33 @@ $(function() {
     });
 
 
+    /*
+     * Get city list on state change.
+     */
+    $('body').on('change', '#state', function(e) {
+        e.preventDefault();
 
+/*
+        console.log(baseUrl);
+        console.log(adminBaseUrl);
+        console.log(apiBaseUrl);
+*/
+        var stateId = $(this).val();
+
+        $.ajax({
+            url : apiBaseUrl + '/cities',
+            type: "POST",
+            dataType: "JSON",
+            data: { 'state_id': stateId}
+        }).done(function (json) {
+            $("#city").find('option').remove().end().append('<option value="0">Please select a city</option>');
+            $.each(json.data, function(i, value) {
+                $('#city').append($('<option>').text(value).attr('value', i));
+            });
+        }).fail(function (error) {
+            alert('Data could not be loaded.');
+        });
+    });
 
 
 

@@ -69,7 +69,15 @@
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
-                        <a href="{{ url('/home') }}">Home</a>
+                        <a href="{{ route('home') }}">Home</a>
+                        <a href="{{ route('logout') }}"
+                               onclick="event.preventDefault();
+                                   document.getElementById('logout-form').submit();">Logout
+                        </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            {{ csrf_field() }}
+                        </form>
+
                     @else
                         <a href="{{ route('admin.login') }}">Admin Login</a>
                         <a href="{{ route('login') }}">Parents Login</a>

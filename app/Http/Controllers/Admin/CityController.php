@@ -144,4 +144,17 @@ class CityController extends Controller
 
         return redirect()->back();
     }
+
+    /*
+     * Get city list based on state id.
+     */
+    public function getCityByState($stateId) {
+        if(empty($stateId)) {
+
+        }
+
+        $city   = City::where('state_id', $stateId)->where('status', '1')->pluck('name', 'id');
+
+
+    }
 }

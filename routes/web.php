@@ -13,14 +13,26 @@
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
 Auth::routes();
 
 
 //==================TEST===================
 use App\Menu;
-Route::get('menu/add', function() {
+use App\Role;
+use App\Permission;
+Route::get('superadmin/permission', function() {
+    $role = Role::find(1);
+    $permissions    = Permission::all();
+    $role->syncPermissions($permissions);
+
+    die("Permission assigned to Superadmin.");
+
+
+
+
+
     exit;
 //    Menu::create(['name' => 'Manage User', 'menu_id' => 0, 'permission_id' => null, 'menu_order' => 0, 'status' => '1', 'created_by' => 1]);
 
@@ -67,7 +79,11 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => ['aut
     Route::resource('teams', 'TeamController');
     Route::resource('nutritions', 'NutritionController');
     Route::resource('menus', 'MenuController');
-
+    Route::resource('schools', 'SchoolController');
+    Route::resource('featureds', 'FeaturedController');
+    Route::resource('image_galleries', 'ImageGalleryController');
+    Route::resource('classes', 'StandardController');
+    Route::resource('programs', 'ProgramController');
 });
 
 /*

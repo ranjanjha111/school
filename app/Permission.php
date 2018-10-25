@@ -52,6 +52,42 @@ class Permission extends \Spatie\Permission\Models\Permission
             'add_users',
             'edit_users',
             'delete_users',
+
+            'view_activities',
+            'add_activities',
+            'edit_activities',
+            'delete_activities',
+
+            'view_nutritions',
+            'add_nutritions',
+            'edit_nutritions',
+            'delete_nutritions',
+
+            'view_schools',
+            'add_schools',
+            'edit_schools',
+            'delete_schools',
+
+            'view_featureds',
+            'add_featureds',
+            'edit_featureds',
+            'delete_featureds',
+
+            'view_image_galleries',
+            'add_image_galleries',
+            'edit_image_galleries',
+            'delete_image_galleries',
+
+            'view_classes',
+            'add_classes',
+            'edit_classes',
+            'delete_classes',
+
+            'view_programs',
+            'add_programs',
+            'edit_programs',
+            'delete_programs',
+
         ];
     }
 

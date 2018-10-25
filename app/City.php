@@ -22,6 +22,13 @@ class City extends Model
     }
 
     /*
+     * City have many schools.
+     */
+    public function schools() {
+        return $this->hasMany('App\School');
+    }
+
+    /*
      * Get list of all city.
      */
     public function getAllCity() {
@@ -89,5 +96,17 @@ class City extends Model
         }
 
         return false;
+    }
+
+    /*
+     * Get active city list.
+     */
+    public function getCityByStateId($stateId) {
+        $result     = City::where('state_id', $stateId)->where('status', '1')->get();
+        foreach($result as $item) {
+            $cityList[$item['id']] = $item['name'];
+        }
+
+        return $cityList;
     }
 }

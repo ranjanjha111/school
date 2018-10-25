@@ -23,11 +23,18 @@ class State extends Model
     }
 
     /*
+     * State have many schools.
+     */
+    public function schools() {
+        return $this->hasMany('App\School');
+    }
+
+    /*
      * Get active state list.
      */
     public function getStateList() {
-        $result     = State::where('status', '1')->get()->toArray();
-        $stateList  = array('Please select a state');
+        $result     = State::where('status', '1')->get();
+        $stateList  = array('' => 'Please select a state');
         foreach($result as $item) {
             $stateList[$item['id']] = $item['name'];
         }

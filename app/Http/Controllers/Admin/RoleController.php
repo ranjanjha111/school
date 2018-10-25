@@ -102,12 +102,15 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if($role = Role::findOrFail($id)) {
+        $role = Role::findOrFail($id);
+        $role->fill($request->except('permissions'));
+        if($role->save()) {
             // admin role has everything
             if($role->name === 'Superadmin') {
                 $role->syncPermissions(Permission::all());
                 return redirect()->route('roles.index');
             }
+
             $permissions = $request->get('permissions', []);
             $role->syncPermissions($permissions);
             $request->session()->flash('success', $role->name . ' permission has been updated successfully.');
